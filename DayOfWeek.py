@@ -10,45 +10,94 @@ Created on Sat Jan  5 17:36:02 2019
 #import subprocess
 #import time
 
-import tkinter as tk
+try:
+    # for Python2
+    import Tkinter as tk
+except ImportError:
+    #for Python3
+    import tkinter as tk
 
-class App:
+from PIL import Image, ImageTk
+import time
+import datetime
+
+#use this class to create instances for M-Su
+class Day:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.configure(background='white')
+        self.root.geometry("1000x1000")
+        self.label = tk.Label(text='')
+        self.label.pack()
+        self.update_clock()
+        self.root.mainloop()
     
-    def __init__(self, master):
-        #create a frame (aka container) to hold two widgets (buttons) and show it
-        frame = tk.Frame(master)
-        frame.pack()
+    #updates time in window    
+    def update_clock(self):
+        now = time.strftime('%H:%M:%S')
+        self.label.configure(text=now)
+        self.root.after(1000, self.update_clock)
+            
+    #displays image associated with the day of week
+    def update_background_image(self, current_day):
+        if current_day == 0:
+            img = ImageTk.PhotoImage(Image.open('Monday.jpg'))
+        elif current_day == 1:
+            img = ImageTk.PhotoImage(Image.open('Tuesday.jpg'))
+        elif current_day == 2:
+            img = ImageTk.PhotoImage(Image.open('Wednesday.jpg'))
+        elif current_day == 3:
+            img = ImageTk.PhotoImage(Image.open('Thursday.jpg'))
+        elif current_day == 4:
+            img = ImageTk.PhotoImage(Image.open('Friday.jpg'))
+        elif current_day == 5:
+            img = ImageTk.PhotoImage(Image.open('Saturday.jpg'))
+        elif current_day == 6:
+            img = ImageTk.PhotoImage(Image.open('Sunday.jpg'))
         
-        #create QUIT button and show
-        self.button = tk.Button(
-                frame, text='QUIT', fg='red', command=frame.quit
-                )
-        self.button.pack(side='right')
+#        label = tk.Label(image=photo)
+#        label.image = photo    #keep a reference
+#        label.pack()
         
-        #create another button and show
-        self.say_testing = tk.Button(frame, text='testing123', fg='blue', command=self.say_testing)
-        self.say_testing.pack(side='left')
+#        w = img.width()
+#        h = img.height()
+#        self.geometry("%dx%d+0+0" % (w, h))
         
-    def say_testing(self):
-        print('testing123... testing123')
+        panel = tk.Label(self, image=img)
+        panel.image = img
+        panel.pack(side='bottom', fill='both', expand='yes')
+        self.root.after(1000, self.root.mainloop())
 
 #create a Tk root widget (a window w/ title bar & decoration)
-root = tk.Tk()  
+#root = tk.Tk()  
 
-app = App(root)
+app = Day()
 
-#create a Label widget (child to root); can display text, image, or other icon
-#img = tk.PhotoImage(file="C:\Users\Justin\Documents\Coding Programs\DayOfWeek (More Complex)\Monday.jpg")
+#continually update background image based on day of week
+while True:
+    current_day = datetime.datetime.today().weekday()
+    app.update_background_image(current_day)
+
+#create a Tk root widget (a window w/ title bar & decoration)
+#root = tk.Tk()
+#root.title('Day of Week')
+#
+#label = tk.Label(root)
+#img = ImageTk.PhotoImage(Image.open('Monday.jpg'))
+#
+#width = root.winfo_screenwidth()
+#height = root.winfo_screenheight()
+#root.geometry(("%dx%d")%(width, height))
+##dimensions = "image size: %dx%d" % (img.width(), img.height())
 #label = tk.Label(image=img)
-#w = tk.Label(root, image='"C:\Users\Justin\Documents\Coding Programs\DayOfWeek (More Complex)\Monday.jpg"') 
+#label.image = img
+#label.pack(side='bottom', fill='both', expand='yes')
 
-#tell the widget to size itself to fit the text & make itself visible
-#label.pack()    
 
 #show the window & create an event loop to handle events from the user 
-root.mainloop()
+#root.mainloop()
 
-root.destroy()
+#root.destroy()
 
 
 
