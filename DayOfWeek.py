@@ -20,15 +20,38 @@ except ImportError:
 from PIL import Image, ImageTk
 import time
 import datetime
+#import os
+
 
 #use this class to create instances for M-Su
-class Day:
+class GUI:
     def __init__(self):
+        #configure the root window
         self.root = tk.Tk()
-        self.root.configure(background='white')
-        self.root.geometry("1000x1000")
-        self.label = tk.Label(text='')
+        self.root.title('Day of Week')
+#        self.root.configure(background='white')
+
+        #set window size
+        w = '1000'
+        h = '1000'
+        self.root.geometry('{}x{}'.format(w, h))
+        
+        #create child frame to root
+        self.frame = tk.Frame(self.root) 
+        
+        #open default image
+        img = ImageTk.PhotoImage(Image.open('Monday.jpg')) 
+        
+        #expand assigns addt'l space to the frame if parent is expanded
+        self.frame.pack(expand='True')   
+        
+        #create child label of frame to display text over image
+        self.label = tk.Label(self.frame, image=img, text='testing', \
+                         font='Times 200 bold', compound=tk.CENTER)
+        
+#        self.label = tk.Label(text='')
         self.label.pack()
+        
         self.update_clock()
         self.root.mainloop()
     
@@ -38,45 +61,43 @@ class Day:
         self.label.configure(text=now)
         self.root.after(1000, self.update_clock)
             
-    #displays image associated with the day of week
-    def update_background_image(self, current_day):
-        if current_day == 0:
-            img = ImageTk.PhotoImage(Image.open('Monday.jpg'))
-        elif current_day == 1:
-            img = ImageTk.PhotoImage(Image.open('Tuesday.jpg'))
-        elif current_day == 2:
-            img = ImageTk.PhotoImage(Image.open('Wednesday.jpg'))
-        elif current_day == 3:
-            img = ImageTk.PhotoImage(Image.open('Thursday.jpg'))
-        elif current_day == 4:
-            img = ImageTk.PhotoImage(Image.open('Friday.jpg'))
-        elif current_day == 5:
-            img = ImageTk.PhotoImage(Image.open('Saturday.jpg'))
-        elif current_day == 6:
-            img = ImageTk.PhotoImage(Image.open('Sunday.jpg'))
-        
+#displays image associated with the day of week
+def update_background_image(self, current_day):
+    if current_day == 0:
+        img = ImageTk.PhotoImage(Image.open('Monday.jpg'))
+    elif current_day == 1:
+        img = ImageTk.PhotoImage(Image.open('Tuesday.jpg'))
+    elif current_day == 2:
+        img = ImageTk.PhotoImage(Image.open('Wednesday.jpg'))
+    elif current_day == 3:
+        img = ImageTk.PhotoImage(Image.open('Thursday.jpg'))
+    elif current_day == 4:
+        img = ImageTk.PhotoImage(Image.open('Friday.jpg'))
+    elif current_day == 5:
+        img = ImageTk.PhotoImage(Image.open('Saturday.jpg'))
+    elif current_day == 6:
+        img = ImageTk.PhotoImage(Image.open('Sunday.jpg'))
+    
 #        label = tk.Label(image=photo)
 #        label.image = photo    #keep a reference
 #        label.pack()
-        
+    
 #        w = img.width()
 #        h = img.height()
 #        self.geometry("%dx%d+0+0" % (w, h))
-        
-        panel = tk.Label(self, image=img)
-        panel.image = img
-        panel.pack(side='bottom', fill='both', expand='yes')
-        self.root.after(1000, self.root.mainloop())
+    
+    self.label = tk.Label(self, image=img)
+    self.label.image = img
+    self.panel.pack(side='bottom', fill='both', expand='yes')
+    self.root.after(1000, self.root.mainloop())
 
-#create a Tk root widget (a window w/ title bar & decoration)
-#root = tk.Tk()  
 
-app = Day()
+app = GUI()
 
 #continually update background image based on day of week
-while True:
-    current_day = datetime.datetime.today().weekday()
-    app.update_background_image(current_day)
+#while True:
+#    current_day = datetime.datetime.today().weekday()
+#    update_background_image(current_day)
 
 #create a Tk root widget (a window w/ title bar & decoration)
 #root = tk.Tk()
