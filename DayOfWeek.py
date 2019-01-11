@@ -32,34 +32,43 @@ class GUI:
 #        self.root.configure(background='white')
 
         #set window size
-        w = '1000'
-        h = '1000'
+#        w = '2000'
+#        h = '2000'
+        w = self.root.winfo_screenwidth()
+        h = self.root.winfo_screenheight()
         self.root.geometry('{}x{}'.format(w, h))
+        
         
         #create child frame to root
         self.frame = tk.Frame(self.root) 
         
         #open default image
-        img = ImageTk.PhotoImage(Image.open('Monday.jpg')) 
+        self.img = ImageTk.PhotoImage(Image.open('Monday.jpg')) 
         
         #expand assigns addt'l space to the frame if parent is expanded
         self.frame.pack(expand='True')   
         
         #create child label of frame to display text over image
-        self.label = tk.Label(self.frame, image=img, text='testing', \
+        self.label = tk.Label(self.frame, image=self.img, text='testing', \
                          font='Times 200 bold', compound=tk.CENTER)
         
 #        self.label = tk.Label(text='')
         self.label.pack()
         
         self.update_clock()
-        self.root.mainloop()
+#        self.root.mainloop()
     
     #updates time in window    
     def update_clock(self):
         now = time.strftime('%H:%M:%S')
         self.label.configure(text=now)
         self.root.after(1000, self.update_clock)
+    
+    #resizes image to fit window
+    def resize_image(self, event):
+        new_width = event.width
+        new_height = event.height
+#        self.img
             
 #displays image associated with the day of week
 def update_background_image(self, current_day):
@@ -93,6 +102,7 @@ def update_background_image(self, current_day):
 
 
 app = GUI()
+app.root.mainloop()
 
 #continually update background image based on day of week
 #while True:
@@ -123,47 +133,7 @@ app = GUI()
 
 
 
-
-
-
-
-#def kill():
-#    try:
-#        subprocess.run(['taskkill', '/f', '/im', "dllhost.exe"])
-##        'ERROR: The process "dllhost.exe" not found.'
-#    except:
-#        pass
-#
-#def dispImage(current_day):
-#        if current_day == 0:
-#            kill()
-#            image = Image.open('Monday.jpg')
-#            image.show()
-#        elif current_day == 1:
-#            kill()
-#            image = Image.open('Tuesday.jpg')
-#            image.show()
-#        elif current_day == 2:
-#            kill()
-#            image = Image.open('Wednesday.jpg')
-#            image.show()
-#        elif current_day == 3:
-#            kill()
-#            image = Image.open('Thursday.jpg')
-#            image.show()
-#        elif current_day == 4:
-#            kill()
-#            image = Image.open('Friday.jpg')
-#            image.show()
-#        elif current_day == 5:
-#            kill()
-#            image = Image.open('Saturday.jpg')
-#            image.show()
-#        elif current_day == 6:
-#            kill()
-#            image = Image.open('Sunday.jpg')
-#            image.show()
-#    
+ 
 #while True:
 #    current_hour = datetime.datetime.today().hour
 #    current_day = datetime.datetime.today().weekday()
