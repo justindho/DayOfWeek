@@ -32,55 +32,59 @@ class GUI:
         self.root.geometry('{}x{}'.format(self.root_width, self.root_height))
             
         #create child frame to root
-        self.frame = tk.Frame(self.root, width=self.root_width, height=self.root_height)
+        self.frame = tk.Frame(self.root, width=self.root_width, height=self.root_height, bg='red')
         self.frame.pack()
         
         #open default image
         current_day = datetime.datetime.today().weekday()
+#        image = Image.open(days_of_week[current_day])
+#        image.resize((50,50), Image.ANTIALIAS)
+#        self.img = ImageTk.PhotoImage(image)
         self.img = ImageTk.PhotoImage(Image.open(days_of_week[current_day]))
         
         #save a reference to the image object to prevent garbage-collection
         self.photo = tk.Label(self.root, image=self.img)
-        self.photo.image = self.img
+#        self.photo.image = self.img
         
         #expand assigns addt'l space to the frame if parent is expanded
         self.frame.pack(expand='True')   
         
         #create child label of frame to display text over image
         self.label = tk.Label(self.frame, image=self.img, text='', \
-                         font='Times 200 bold', compound=tk.CENTER)
+                         font='Times 200 bold', compound=tk.TOP)
         self.label.pack()
         
         #continually update the time and the background image
         self.update_image_clock()        
-#        self.update_clock()
 #        self.root.mainloop()
     
-    #updates time in window    
-#    def update_clock(self):
-#        now = time.strftime('%H:%M:%S')
-#        self.label.configure(text=now)
-#        self.root.after(1000, self.update_clock)
     
     #updates background image and clock
     def update_image_clock(self):
         current_day = datetime.datetime.today().weekday()
 #        current_day = randint(0,6)  #use for testing purposes
+        image = Image.open(days_of_week[current_day])
+#        self.image_new_dims(image)
+#        image.resize((self.img.width, self.img.height), Image.ANTIALIAS)
+        w, h = image.size
+        image.resize((w, h+300), Image.ANTIALIAS)
         self.img = ImageTk.PhotoImage(Image.open(days_of_week[current_day]))
         self.photo = tk.Label(self.root, image=self.img)
 #        self.photo.image = self.img
         now = time.strftime('%H:%M:%S')
         self.label.configure(image=self.img, text=now)
-#        self.label = tk.Label(self.frame, image=self.img, text=time.strftime('%H:%M:%S'), \
-#                         font='Times 200 bold', compound=tk.CENTER)
         self.root.after(1000, self.update_image_clock)
     
-    #resizes image to fit window
-    def resize_image(self, image):
-#        ratio_width = self.root_width / 
-#        ratio_height = self.root_height / 
-        pass
-        
+    #provides new image dimensions to fit to full screen
+    def image_new_dims(self, image):
+        img_width, img_height = image.size
+        ratio_width = self.root_width / img_width
+        ratio_height = self.root_height / img_height
+        scale = int(max(ratio_width, ratio_height))
+#        self.img = ImageTk.PhotoImage(Image.open())
+        self.img.width = img_width * scale
+        self.img.height = img_height * scale
+                
     #updates secondary image to sun/moon based on AM/PM
     def AM_PM(self):
         now = int(time.strftime('%H'))
@@ -93,27 +97,7 @@ class GUI:
         pass
             
 days_of_week = {0:'Monday.jpg', 1:'Tuesday.jpg', 2:'Wednesday.jpg', \
-                        3:'Thursday.jpg', 4:'Friday.jpg', 5:'Saturday.jpg', \
-                        6:'Sunday.jpg'}
+                3:'Thursday.jpg', 4:'Friday.jpg', 5:'Saturday.jpg', \
+                6:'Sunday.jpg'}
 app = GUI()
 app.root.mainloop()
-
-#continually update background image based on day of week
-#while True:
-#    current_day = datetime.datetime.today().weekday()
-#    app.img = update_background_image(current_day)
-
-
-
- 
-#while True:
-#    current_hour = datetime.datetime.today().hour
-#    current_day = datetime.datetime.today().weekday()
-#    if current_hour == 0:
-#        dispImage(current_day)
-#        time.sleep(82800)   #wait 23 hours to check the time again
-#    else:
-#        dispImage(current_day)
-#        time.sleep((24 - current_hour) * 3600)  #wait til midnight to check the day again
-#
-#input("Press enter to close program")
