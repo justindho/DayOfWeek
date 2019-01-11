@@ -29,21 +29,24 @@ class GUI:
         #configure the root window
         self.root = tk.Tk()
         self.root.title('Day of Week')
-#        self.root.configure(background='white')
+        self.root.configure(background='black')
 
         #set window size
-#        w = '2000'
-#        h = '2000'
-        w = self.root.winfo_screenwidth()
-        h = self.root.winfo_screenheight()
-        self.root.geometry('{}x{}'.format(w, h))
+        root_width = self.root.winfo_screenwidth()
+        root_height = self.root.winfo_screenheight()
+        self.root.geometry('{}x{}'.format(root_width, root_height))
         
         
         #create child frame to root
-        self.frame = tk.Frame(self.root) 
+        self.frame = tk.Frame(self.root, width=root_width, height=root_height)
+        self.frame.pack()
         
         #open default image
         self.img = ImageTk.PhotoImage(Image.open('Monday.jpg')) 
+        
+        #save a reference to the image object to prevent garbage-collection
+        self.photo = tk.Label(self.root, image=self.img)
+        self.photo.image = self.img
         
         #expand assigns addt'l space to the frame if parent is expanded
         self.frame.pack(expand='True')   
@@ -52,7 +55,6 @@ class GUI:
         self.label = tk.Label(self.frame, image=self.img, text='testing', \
                          font='Times 200 bold', compound=tk.CENTER)
         
-#        self.label = tk.Label(text='')
         self.label.pack()
         
         self.update_clock()
