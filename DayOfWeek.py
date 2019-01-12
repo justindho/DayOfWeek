@@ -31,7 +31,7 @@ class GUI:
         #configure the root window
         self.root = tk.Tk()
         self.root.title('Day of Week')
-        self.root.configure(background='white')
+        self.root.configure(background='green')
 
         #set window size
         self.root_width = self.root.winfo_screenwidth()
@@ -46,7 +46,7 @@ class GUI:
                                      bg='blue')
         self.btm_frame_rh = tk.Frame(self.root, width=self.root_width/2, \
                                      height=round(self.root_height*3/4), \
-                                     bg='green')
+                                     bg='pink')
         
         #layout all of the main containers
         self.root.grid_rowconfigure(1, weight=1)
@@ -59,9 +59,14 @@ class GUI:
         #create the widgets for the top frame
         self.time_label = tk.Label(self.top_frame, text='testing', \
                                    font='Times 150 bold')
+#        self.time_canvas = tk.Canvas(self.top_frame, width=self.root_width, \
+#                                     height=round(self.root_height/4))
+#        self.text_canvas = self.time_canvas.create_text(10, 10, anchor='center')
+#        self.time_canvas = self.time_canvas.itemconfig(self.text_canvas, text='testing')
         
         #layout the widgets in the top frame
         self.time_label.grid(row=1, sticky='news')
+#        self.time_canvas.grid(row=1, sticky='news').
         
         #create the widgets for the bottom lefthand frame
         today = datetime.datetime.today().weekday()
@@ -98,8 +103,12 @@ class GUI:
         #get current time and assign it to self.label_img_bg
         now = time.strftime('%H:%M:%S')
         
+        #convert military time to 12-hour clock
+        
+        
         #update widget contents
         self.time_label.configure(text=now)
+#        self.time_canvas.itemconfig(self.text_canvas, text=now)
         self.btm_frame_lh_label.configure(image=self.btm_frame_lh_img)
         self.AM_PM()
         
