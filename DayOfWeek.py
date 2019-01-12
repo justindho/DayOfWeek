@@ -49,8 +49,9 @@ class GUI:
                                      bg='green')
         
         #layout all of the main containers
-#        self.root.grid_rowconfigure(1, weight=1)
-#        self.root.grid_columnfigure(0, weight=1)
+        self.root.grid_rowconfigure(1, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_columnconfigure(1, weight=1)
         self.top_frame.grid(row=0, columnspan=2)
         self.btm_frame_lh.grid(row=1, column=0)
         self.btm_frame_rh.grid(row=1, column=1)
@@ -69,7 +70,7 @@ class GUI:
                                            image=self.btm_frame_lh_img)
         
         #layout the widgets in the bottom lefthand frame
-        self.btm_frame_lh_label.grid(row=1, column=1, sticky='news')
+        self.btm_frame_lh_label.grid(row=1, column=1, sticky='W')
         
         #create the widgets for the bottom righthand frame
         self.hour = int(time.strftime('%H'))
