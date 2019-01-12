@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Fri Jan 11 22:11:42 2019
+
+@author: Justin
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Sat Jan  5 17:36:02 2019
 
 @author: Justin Ho
@@ -24,55 +31,78 @@ class GUI:
         #configure the root window
         self.root = tk.Tk()
         self.root.title('Day of Week')
-        self.root.configure(background='black')
+        self.root.configure(background='white')
 
         #set window size
         self.root_width = self.root.winfo_screenwidth()
         self.root_height = self.root.winfo_screenheight()
         self.root.geometry('{}x{}'.format(self.root_width, self.root_height))
-            
-        #create child frame to root
-        self.frame = tk.Frame(self.root, width=self.root_width, height=self.root_height, bg='red')
-        self.frame.pack()
         
-        #open default image
-        current_day = datetime.datetime.today().weekday()
-#        image = Image.open(days_of_week[current_day])
-#        image.resize((50,50), Image.ANTIALIAS)
-#        self.img = ImageTk.PhotoImage(image)
-        self.img = ImageTk.PhotoImage(Image.open(days_of_week[current_day]))
+        #create all of the main containers
+        self.top_frame = tk.Frame(self.root, width=self.root_width, \
+                              height=round(self.root_height/4), bg='red')
+        self.btm_frame_lh = tk.Frame(self.root, width=self.root_width/2, \
+                                     height=round(self.root_height*3/4), \
+                                     bg='blue')
+        self.btm_frame_rh = tk.Frame(self.root, width=self.root_width/2, \
+                                     height=round(self.root_height*3/4), \
+                                     bg='green')
         
-        #save a reference to the image object to prevent garbage-collection
-        self.photo = tk.Label(self.root, image=self.img)
-#        self.photo.image = self.img
+        #layout all of the main containers
+#        self.root.grid_rowconfigure(1, weight=1)
+#        self.root.grid_columnfigure(0, weight=1)
+        self.top_frame.grid(row=0, columnspan=2)
+        self.btm_frame_lh.grid(row=1, column=0)
+        self.btm_frame_rh.grid(row=1, column=1)
         
-        #expand assigns addt'l space to the frame if parent is expanded
-        self.frame.pack(expand='True')   
+        #create the widgets for the top frame
+        self.time_label = tk.Label(self.top_frame, text='testing', \
+                                   font='Times 150 bold')
         
-        #create child label of frame to display text over image
-        self.label = tk.Label(self.frame, image=self.img, text='', \
-                         font='Times 200 bold', compound=tk.TOP)
-        self.label.pack()
+        #layout the widgets in the top frame
+        self.time_label.grid(row=1, sticky='news')
         
+        #create the widgets for the bottom lefthand frame
+        today = datetime.datetime.today().weekday()
+        self.btm_frame_lh_img = ImageTk.PhotoImage(Image.open(days_of_week[today]))
+        self.btm_frame_lh_label = tk.Label(self.btm_frame_lh, \
+                                           image=self.btm_frame_lh_img)
+        
+        #layout the widgets in the bottom lefthand frame
+        self.btm_frame_lh_label.grid(row=1, column=1, sticky='news')
+        
+        #create the widgets for the bottom righthand frame
+        self.hour = int(time.strftime('%H'))
+        self.ampm_img = 'sun.png' if self.hour <12 else 'moon.png'
+        self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open(self.ampm_img))
+        self.btm_frame_rh_label = tk.Label(self.btm_frame_rh, \
+                                           image=self.btm_frame_rh_img)
+        
+        #layout the widgets in the bottom righthand frame
+        self.btm_frame_rh_label.grid(row=1, column=0, sticky='news')
+                        
         #continually update the time and the background image
         self.update_image_clock()        
-#        self.root.mainloop()
     
     
     #updates background image and clock
     def update_image_clock(self):
         current_day = datetime.datetime.today().weekday()
-#        current_day = randint(0,6)  #use for testing purposes
-        image = Image.open(days_of_week[current_day])
-#        self.image_new_dims(image)
-#        image.resize((self.img.width, self.img.height), Image.ANTIALIAS)
-        w, h = image.size
-        image.resize((w, h+300), Image.ANTIALIAS)
-        self.img = ImageTk.PhotoImage(Image.open(days_of_week[current_day]))
-        self.photo = tk.Label(self.root, image=self.img)
-#        self.photo.image = self.img
+#        image = Image.open(days_of_week[current_day])
+#        image.thumbnail((self.root_width, self.root_height))
+#        self.img_day = ImageTk.PhotoImage(image)
+        self.btm_frame_lh_img = ImageTk.PhotoImage(Image.open(days_of_week[current_day]))
+        self.photo_day = tk.Label(self.root, image=self.btm_frame_lh_img)
+        
+        #get current time and assign it to self.label_img_bg
         now = time.strftime('%H:%M:%S')
-        self.label.configure(image=self.img, text=now)
+        
+        #update widget contents
+        self.time_label.configure(text=now)
+        self.btm_frame_lh_label.configure(image=self.btm_frame_lh_img)
+        self.AM_PM()
+        
+        #continually update screen every 0.001 seconds
         self.root.after(1000, self.update_image_clock)
     
     #provides new image dimensions to fit to full screen
@@ -90,12 +120,15 @@ class GUI:
         now = int(time.strftime('%H'))
         if now < 12:
             #display image of sun
-            pass
+            self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open('sun.png'))
+            self.btm_frame_rh_label.configure(image=self.btm_frame_rh_img)
         elif now >= 12:
             #display image of moon
-            pass
-        pass
+            self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open('moon.png'))
+            self.btm_frame_rh_label.configure(image=self.btm_frame_rh_img)
+        
             
+#create dictionary mapping  weekday() output to an image            
 days_of_week = {0:'Monday.jpg', 1:'Tuesday.jpg', 2:'Wednesday.jpg', \
                 3:'Thursday.jpg', 4:'Friday.jpg', 5:'Saturday.jpg', \
                 6:'Sunday.jpg'}
