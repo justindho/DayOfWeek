@@ -20,10 +20,7 @@ except ImportError:
     import tkinter as tk
 
 from PIL import Image, ImageTk
-import time
 import datetime
-#import os
-#from random import randint
 
 #use this class to create instances for M-Su
 class GUI:
@@ -78,7 +75,7 @@ class GUI:
         self.btm_frame_lh_label.grid(row=1, column=1, sticky='W')
         
         #create the widgets for the bottom righthand frame
-        self.hour = int(time.strftime('%H'))
+        self.hour = datetime.datetime.now().hour
         self.ampm_img = 'sun.png' if self.hour <12 else 'moon.png'
         self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open(self.ampm_img))
         self.btm_frame_rh_label = tk.Label(self.btm_frame_rh, \
@@ -100,13 +97,9 @@ class GUI:
         self.btm_frame_lh_img = ImageTk.PhotoImage(Image.open(days_of_week[current_day]))
         self.photo_day = tk.Label(self.root, image=self.btm_frame_lh_img)
         
-        #get current time and assign it to self.label_img_bg
-#        now = time.strftime('%H:%M:%S')
+        #get current time and convert to 12-hour clock
         now = datetime.datetime.now()
-        
-        #convert military time to 12-hour clock
         now = now.strftime('%I:%M:%S')
-        
         
         #update widget contents
         self.time_label.configure(text=now)
@@ -129,12 +122,12 @@ class GUI:
                 
     #updates secondary image to sun/moon based on AM/PM
     def AM_PM(self):
-        now = int(time.strftime('%H'))
-        if now < 12:
+        hour = datetime.datetime.now().hour
+        if hour < 12:
             #display image of sun
             self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open('sun.png'))
             self.btm_frame_rh_label.configure(image=self.btm_frame_rh_img)
-        elif now >= 12:
+        elif hour >= 12:
             #display image of moon
             self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open('moon.png'))
             self.btm_frame_rh_label.configure(image=self.btm_frame_rh_img)
