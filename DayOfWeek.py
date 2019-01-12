@@ -101,9 +101,11 @@ class GUI:
         self.photo_day = tk.Label(self.root, image=self.btm_frame_lh_img)
         
         #get current time and assign it to self.label_img_bg
-        now = time.strftime('%H:%M:%S')
+#        now = time.strftime('%H:%M:%S')
+        now = datetime.datetime.now()
         
         #convert military time to 12-hour clock
+        now = now.strftime('%I:%M:%S')
         
         
         #update widget contents
