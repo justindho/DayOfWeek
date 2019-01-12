@@ -46,6 +46,7 @@ class GUI:
                                      bg='pink')
         
         #layout all of the main containers
+        self.root.grid_rowconfigure(0, weight=0)
         self.root.grid_rowconfigure(1, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=1)
@@ -125,11 +126,11 @@ class GUI:
         hour = datetime.datetime.now().hour
         if hour < 12:
             #display image of sun
-            self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open('sun.png'))
+            self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open('AM.png'))
             self.btm_frame_rh_label.configure(image=self.btm_frame_rh_img)
         elif hour >= 12:
             #display image of moon
-            self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open('moon.png'))
+            self.btm_frame_rh_img = ImageTk.PhotoImage(Image.open('PM.png'))
             self.btm_frame_rh_label.configure(image=self.btm_frame_rh_img)
         
             
